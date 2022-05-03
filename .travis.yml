@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t taka/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true taka/react-test npm test
+
+after_success:
+  - docker build -t taka/multi-client ./client
+  - docker build -t taka/multi-nginx ./nginx
+  - docker build -t taka/multi-server ./server
+  - docker build -t taka/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push taka/multi-client
+  - docker push taka/multi-nginx
+  - docker push taka/multi-server
+  - docker push taka/multi-worker
