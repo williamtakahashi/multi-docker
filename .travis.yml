@@ -9,14 +9,14 @@ script:
   - docker run -e CI=true taka/react-test npm test
 
 after_success:
-  - docker build -t taka/multi-client ./client
-  - docker build -t taka/multi-nginx ./nginx
-  - docker build -t taka/multi-server ./server
-  - docker build -t taka/multi-worker ./worker
+  - docker build -t williamtakahashi/multi-client ./client
+  - docker build -t williamtakahashi/multi-nginx ./nginx
+  - docker build -t williamtakahashi/multi-server ./server
+  - docker build -t williamtakahashi/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push taka/multi-client
-  - docker push taka/multi-nginx
-  - docker push taka/multi-server
-  - docker push taka/multi-worker
+  - docker push williamtakahashi/multi-client
+  - docker push williamtakahashi/multi-nginx
+  - docker push williamtakahashi/multi-server
+  - docker push williamtakahashi/multi-worker
